@@ -1,0 +1,1 @@
+import{_ as a,o as c,c as r,a as e,d as s}from"./app.f52a60eb.js";const t={},_=e("h1",{id:"_18-5-risc-v",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_18-5-risc-v","aria-hidden":"true"},"#"),s(" 18.5 RISC-V")],-1),o=[_];function i(n,d){return c(),r("div",null,o)}var l=a(t,[["render",i],["__file","18.5-risc-v.html.vue"]]);export{l as default};
