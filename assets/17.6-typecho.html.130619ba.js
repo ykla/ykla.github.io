@@ -1,0 +1,1 @@
+import{_ as t,o as c,c as a,a as e,d as o}from"./app.4897455b.js";const _={},r=e("h1",{id:"_17-6-typecho",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_17-6-typecho","aria-hidden":"true"},"#"),o(" 17.6 Typecho")],-1),s=[r];function h(n,d){return c(),a("div",null,s)}var l=t(_,[["render",h],["__file","17.6-typecho.html.vue"]]);export{l as default};
