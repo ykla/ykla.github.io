@@ -35,10 +35,10 @@ export default defineUserConfig({
       id: 'G-08Q6JW7QTV',
     }),
     sitemapPlugin({
-      hostname: 'https://ykla.github.io/',
+      hostname: 'https://mfga.bsdcn.org/',
     }),
     seoPlugin({
-      hostname: 'https://ykla.github.io/',
+      hostname: 'https://mfga.bsdcn.org/',
     }),
   ],
 });
