@@ -21,7 +21,7 @@ export default defineUserConfig({
   theme: defaultTheme({
     logo: '/favicon.ico',
     sidebar: sideBarConfig,
-    docsRepo: 'https://github.com/FreeBSD-MFGA/FreeBSD-MFGA',
+    docsRepo: 'https://github.com/ykla/ykla.github.io',
     docsBranch: 'main',
     editLinkPattern: ':repo/edit/:branch/:path',
     editLinkText: 'Edit in GitHub',
@@ -35,10 +35,10 @@ export default defineUserConfig({
       id: 'G-XXXXXXXX',
     }),
     sitemapPlugin({
-      hostname: 'https://mfga.bsdcn.org',
+      hostname: 'https://ykla.github.io/',
     }),
     seoPlugin({
-      hostname: 'https://mfga.bsdcn.org',
+      hostname: 'https://ykla.github.io/',
     }),
   ],
 });
