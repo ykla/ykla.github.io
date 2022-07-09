@@ -32,7 +32,7 @@ export default defineUserConfig({
   plugins: [
     fullTextSearchPlugin,
     googleAnalyticsPlugin({
-      id: 'G-XXXXXXXX',
+      id: 'G-08Q6JW7QTV',
     }),
     sitemapPlugin({
       hostname: 'https://ykla.github.io/',
