@@ -1,0 +1,1 @@
+import{_ as r,o as a,c as t,a as e,d as o}from"./app.a8f25536.js";const _={},c=e("h1",{id:"_27-0-overview",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_27-0-overview","aria-hidden":"true"},"#"),o(" 27.0 Overview")],-1),s=[c];function i(n,d){return a(),t("div",null,s)}var h=r(_,[["render",i],["__file","27.0-overview.html.vue"]]);export{h as default};
