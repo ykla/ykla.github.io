@@ -1,1 +1,0 @@
-import{_ as a,o as t,c as n,a as e,d as _}from"./app.4897455b.js";const r={},c=e("h1",{id:"_5-9-wine",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_5-9-wine","aria-hidden":"true"},"#"),_(" 5.9 Wine")],-1),o=[c];function s(i,d){return t(),n("div",null,o)}var l=a(r,[["render",s],["__file","5.9-wine.html.vue"]]);export{l as default};
