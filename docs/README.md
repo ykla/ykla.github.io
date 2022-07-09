@@ -60,14 +60,14 @@ Due to the limitations of the author, it is inevitable that the book will contai
 
 There is still a lot of work to be done, including but not limited to:
 
-- The FreeBSD 14 shell has been standardized to `sh`, and tutorials need to be standardized for it
-- Organizing and uploading configuration files and environments
-- Optimize the formatting of the tutorial directory
-- Improve the current blank chapters and test and verify existing content
-- actively promote and seek official publication
-- Remove external references to text/images and other content or give standardized citation statements to avoid copyright issues
-- Consider elevating the Virtual Box virtual machine in this paper because of the many business changes resulting from Broadcom's acquisition of VMware
-- Remove or add examples of ideas that are too subjective or unsupported
+- The FreeBSD 14 shell has been standardized to `sh`, and tutorials need to be standardized for it.
+- Organizing and uploading configuration files and environments.
+- Optimize the formatting of the tutorial directory.
+- Improve the current blank chapters and test and verify existing content.
+- actively promote and seek official publication.
+- Remove external references to text/images and other content or give standardized citation statements to avoid copyright issues.
+- Consider elevating the Virtual Box virtual machine in this paper because of the many business changes resulting from Broadcom's acquisition of VMware.
+- Remove or add examples of ideas that are too subjective or unsupported.
 
 ### Licensing
 
