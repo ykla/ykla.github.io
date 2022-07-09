@@ -1,1 +1,0 @@
-import{_ as a,o as t,c as _,a as e,d as r}from"./app.69650211.js";const c={},o=e("h1",{id:"_17-3-php-8-x",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_17-3-php-8-x","aria-hidden":"true"},"#"),r(" 17.3 PHP 8.X")],-1),s=[o];function n(d,h){return t(),_("div",null,s)}var p=a(c,[["render",n],["__file","17.3-php-8.x.html.vue"]]);export{p as default};
