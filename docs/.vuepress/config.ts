@@ -21,7 +21,7 @@ export default defineUserConfig({
   theme: defaultTheme({
     logo: '/favicon.ico',
     sidebar: sideBarConfig,
-    docsRepo: 'https://github.com/ykla/ykla.github.io',
+    docsRepo: 'https://github.com/FreeBSD-MFGA/FreeBSD-MFGA',
     docsBranch: 'main',
     editLinkPattern: ':repo/edit/:branch/:path',
     editLinkText: 'Edit in GitHub',
