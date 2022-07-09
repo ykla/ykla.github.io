@@ -1,1 +1,0 @@
-import{_ as r,o as s,c as a,a as e,d as t}from"./app.633659ed.js";const _={},n=e("h1",{id:"_16-4-dns-server",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_16-4-dns-server","aria-hidden":"true"},"#"),t(" 16.4 DNS server")],-1),c=[n];function d(o,i){return s(),a("div",null,c)}var l=r(_,[["render",d],["__file","16.4-dns-server.html.vue"]]);export{l as default};
