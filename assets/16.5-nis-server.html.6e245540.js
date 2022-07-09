@@ -1,0 +1,1 @@
+import{_ as r,o as s,c as a,a as e,d as t}from"./app.e32577e2.js";const _={},c=e("h1",{id:"_16-5-nis-server",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_16-5-nis-server","aria-hidden":"true"},"#"),t(" 16.5 NIS server")],-1),n=[c];function o(i,d){return s(),a("div",null,n)}var l=r(_,[["render",o],["__file","16.5-nis-server.html.vue"]]);export{l as default};

@@ -1,3 +1,0 @@
-import{_ as e,o as d,c as s,e as a}from"./app.a8f25536.js";const r={},n=a(`<h1 id="_8-2-adding-users" tabindex="-1"><a class="header-anchor" href="#_8-2-adding-users" aria-hidden="true">#</a> 8.2 Adding Users</h1><p>Create a normal user (username <code>ykla</code>) and add it to the <code>video</code> subgroup:</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code># adduser -g video -s sh -w yes
-# Username: ykla
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div>`,3),t=[n];function i(c,o){return d(),s("div",null,t)}var u=e(r,[["render",i],["__file","8.2-add-users.html.vue"]]);export{u as default};
