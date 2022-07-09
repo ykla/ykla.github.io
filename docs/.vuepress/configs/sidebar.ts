@@ -160,8 +160,7 @@ export const sideBarConfig: SidebarConfig = [
     children: [
       '/chapter-12.-geom-storage-framework/12.1-overview.md',
       '/chapter-12.-geom-storage-framework/12.2-raid-0.md',
-      '/chapter-12.-geom-storage-framework/12.3-raid-1.md',
-      '/di-shi-er-zhang-geom-cun-chu-kuang-jia/di-si-jie-raid-3.md',
+      '/chapter-12.-geom-storage-framework/12.3-raid-1.md'
       '/chapter-12.-geom-storage-framework/12.4-raid-3.md',
       '/chapter-12.-geom-storage-framework/12.5-soft-raid-configuration.md',
       '/chapter-12.-geom-storage-framework/12.6-geom-gate-network.md',
