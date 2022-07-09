@@ -14,7 +14,7 @@ export const sideBarConfig: SidebarConfig = [
   {
     text: 'Chapter 0 FreeBSD MFGA',
     children: [
-      '/chapter-0.-freebsd-mfga/0.1.-deficiencies-of-freebsd.md',
+      '/chapter-0-freebsd-mfga/0.1.-deficiencies-of-freebsd.md',
     ],
   },
   {
