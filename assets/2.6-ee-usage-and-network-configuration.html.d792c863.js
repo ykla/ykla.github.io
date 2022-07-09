@@ -1,0 +1,32 @@
+import{_ as e,o as t,c as i,e as n}from"./app.cc45af49.js";const a={},s=n(`<h1 id="_2-6-ee-usage-and-network-configuration" tabindex="-1"><a class="header-anchor" href="#_2-6-ee-usage-and-network-configuration" aria-hidden="true">#</a> 2.6 ee Usage and Network Configuration</h1><h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview" aria-hidden="true">#</a> Overview</h2><h3 id="ee-usage" tabindex="-1"><a class="header-anchor" href="#ee-usage" aria-hidden="true">#</a> ee usage</h3><p>ee is much simpler to use than nano. It is a text editor that comes with thebase system.</p><p>For example</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code># ee a.txt
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>Press ESC, a prompt box will be displayed, press enter twice to save.</p><h3 id="network-configuration" tabindex="-1"><a class="header-anchor" href="#network-configuration" aria-hidden="true">#</a> Network configuration</h3><p>First <code>ifconfig</code> to see if there is a network card, if not then it is out of the scope of this section. Please note that <code>lo0</code> is not the real NIC, if you can only see this it means your NIC is not properly driven.</p><p>Example output.</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code>root@ykla:~ # ifconfig
+genet0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1500
+	options=68000b&lt;RXCSUM,TXCSUM,VLAN_MTU,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6&gt;
+	ether dc:a6:1a:2e:f4:4t
+	inet 192.168.123.157 netmask 0xffffff00 broadcast 192.168.123.255
+	media: Ethernet autoselect (1000baseT &lt;full-duplex&gt;)
+	status: active
+	nd6 options=29&lt;PERFORMNUD,IFDISABLED,AUTO_LINKLOCAL&gt;
+lo0: flags=8049&lt;UP,LOOPBACK,RUNNING,MULTICAST&gt; metric 0 mtu 16384
+	options=680003&lt;RXCSUM,TXCSUM,LINKSTATE,RXCSUM_IPV6,TXCSUM_IPV6&gt;
+	inet6 ::1 prefixlen 128
+	inet6 fe80::1%lo0 prefixlen 64 scopeid 0x2
+	inet 127.0.0.1 netmask 0xff000000
+	groups: lo
+	nd6 options=21&lt;PERFORMNUD,AUTO_LINKLOCAL&gt;
+root@ykla:~ # 
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>The following applies to both virtual and physical machines.</p><p>By default, FreeBSD is properly networked, if not it may be because DNS is not properly configured.</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code># ee /etc/resolv.conf
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>Clear out the contents. Add the following.</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code>nameserver 8.8.8.8  #Google DNS
+nameserver 8.8.4.4
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><p>After that restart the network configuration</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code># /etc/netstart restart
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><p>Try pinging google.com. (Press ctrl + C to interrupt)</p><p>Example output.</p><div class="language-text ext-text line-numbers-mode"><pre class="language-text"><code>root@ykla:~ # ping google.com
+PING google.com  64.233.160.0: 56 data bytes
+64 bytes from 64.233.160.0: icmp_seq=0 ttl=55 time=30.617 ms
+64 bytes from 64.233.160.0: icmp_seq=1 ttl=55 time=30.608 ms
+64 bytes from 64.233.160.0: icmp_seq=2 ttl=55 time=30.633 ms
+^C
+--- google.com ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 30.608/30.619/30.633/0.010 ms
+root@ykla:~ # 
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Network connection.</p><h2 id="detailed-usage" tabindex="-1"><a class="header-anchor" href="#detailed-usage" aria-hidden="true">#</a> Detailed usage</h2><p>Press <code>ESC</code> after editing to bring up the prompt box, enter <code>a</code> to save.</p><ul><li>\\ or [ key to display the main menu.</li><li>o Enter the ASCII code, e.g., enter 65 to display A.</li><li>u Jump to the end of the file.</li><li>t Jump to the beginning of the file.</li><li>c Enter command. After pressing Ctrl+c, command instructions appear in the upper menu, for example you can type a number directly to move the cursor to a certain line.</li><li>y search. After pressing Ctrl+y, you can enter the string you want to search for. If you want to search for the next string, just press Ctrl+x again. The preset search is case-insensitive; to make it case-sensitive, you can press Ctrl+c and type case. To cancel, just press Ctrl+c again and type nocase.</li><li>a Go to the beginning of the line.</li><li>e Go to the end of the line.</li><li>d Delete the character at the cursor location.</li><li>j Paste the last deleted character.</li><li>k Deletes an entire line at the cursor location.</li><li>l Paste the last deleted line.</li><li>w Deletes a word.</li><li>r Paste the last deleted word.</li><li>p Moves the cursor to the previous line.</li><li>n Moves the cursor to the next line.</li><li>b Moves the cursor to the previous word, same as the arrow keys left.</li><li>f Moves the cursor to the next word, as with the right arrow key.</li><li>g Next page.</li><li>v Previous page.</li><li>z Move to the next word.</li><li>Leave ee. If the file has been modified, it will ask you if you want to save the file.</li></ul>`,25),l=[s];function r(o,d){return t(),i("div",null,l)}var u=e(a,[["render",r],["__file","2.6-ee-usage-and-network-configuration.html.vue"]]);export{u as default};
