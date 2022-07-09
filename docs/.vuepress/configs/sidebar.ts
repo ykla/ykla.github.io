@@ -1,7 +1,7 @@
 /**
  * @file configs/sidebar.ts
  * @brief Contains the SidebarConfig object.
- * @copyright Copyright (c) 2022 FreeBSD Chinese Community. All rights reserved.
+ * @copyright Copyright (c) 2022 FreeBSD MFGA. All rights reserved.
  */
 
 import type {SidebarConfig} from '@vuepress/theme-default';
