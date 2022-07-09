@@ -1,0 +1,1 @@
+import{_ as a,o as t,c as _,a as e,d as r}from"./app.3e49afea.js";const c={},o=e("h1",{id:"_14-5-ipv6",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_14-5-ipv6","aria-hidden":"true"},"#"),r(" 14.5 IPv6")],-1),s=[o];function n(d,i){return t(),_("div",null,s)}var l=a(c,[["render",n],["__file","14.5-ipv6.html.vue"]]);export{l as default};
