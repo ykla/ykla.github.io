@@ -1,0 +1,1 @@
+import{_ as a,o as t,c as _,a as e,d}from"./app.9e92ab39.js";const r={},c=e("h1",{id:"_9-4-jail-update",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_9-4-jail-update","aria-hidden":"true"},"#"),d(" 9.4 Jail Update")],-1),o=[c];function s(i,l){return t(),_("div",null,o)}var h=a(r,[["render",s],["__file","9.4-jail-update.html.vue"]]);export{h as default};
