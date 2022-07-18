@@ -1,1 +1,0 @@
-import{_ as r,o as a,c,a as e,d as t}from"./app.3b75d2e9.js";const s={},_=e("h1",{id:"_16-2-dhcp-server",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_16-2-dhcp-server","aria-hidden":"true"},"#"),t(" 16.2 DHCP Server")],-1),d=[_];function o(n,h){return a(),c("div",null,d)}var l=r(s,[["render",o],["__file","16.2-dhcp-server.html.vue"]]);export{l as default};
