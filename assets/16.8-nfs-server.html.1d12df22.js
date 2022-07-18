@@ -1,0 +1,1 @@
+import{_ as r,o as s,c as a,a as e,d as t}from"./app.e67b67d1.js";const _={},c=e("h1",{id:"_16-8-nfs-server",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_16-8-nfs-server","aria-hidden":"true"},"#"),t(" 16.8 NFS server")],-1),n=[c];function o(d,f){return s(),a("div",null,n)}var h=r(_,[["render",o],["__file","16.8-nfs-server.html.vue"]]);export{h as default};
