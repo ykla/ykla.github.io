@@ -1,1 +1,0 @@
-import{_ as t,o as s,c as a,a as e,d as o}from"./app.be834f5f.js";const _={},r=e("h1",{id:"_25-6-i-o-system",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_25-6-i-o-system","aria-hidden":"true"},"#"),o(" 25.6 I/O System")],-1),c=[r];function n(d,i){return s(),a("div",null,c)}var h=t(_,[["render",n],["__file","25.6-i-o-system.html.vue"]]);export{h as default};

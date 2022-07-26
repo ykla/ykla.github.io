@@ -1,0 +1,1 @@
+import{_ as r,o as a,c as t,a as e,d as n}from"./app.94238d08.js";const _={},c=e("h1",{id:"_25-2-kernel",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_25-2-kernel","aria-hidden":"true"},"#"),n(" 25.2 Kernel")],-1),o=[c];function s(l,d){return a(),t("div",null,o)}var h=r(_,[["render",s],["__file","25.2-kernel.html.vue"]]);export{h as default};
