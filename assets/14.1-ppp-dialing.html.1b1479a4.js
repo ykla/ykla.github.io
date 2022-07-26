@@ -1,1 +1,0 @@
-import{_ as a,o as i,c as t,a as e,d as n}from"./app.a2f69936.js";const _={},r=e("h1",{id:"_14-1-ppp-dialing",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_14-1-ppp-dialing","aria-hidden":"true"},"#"),n(" 14.1 PPP Dialing")],-1),c=[r];function d(o,s){return i(),t("div",null,c)}var p=a(_,[["render",d],["__file","14.1-ppp-dialing.html.vue"]]);export{p as default};
