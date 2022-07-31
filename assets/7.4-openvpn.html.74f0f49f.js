@@ -1,1 +1,0 @@
-import{_ as n,o as a,c as t,a as e,d as o}from"./app.aa59af99.js";const _={},r=e("h1",{id:"_7-4-openvpn",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#_7-4-openvpn","aria-hidden":"true"},"#"),o(" 7.4 OpenVPN")],-1),c=[r];function s(d,p){return a(),t("div",null,c)}var h=n(_,[["render",s],["__file","7.4-openvpn.html.vue"]]);export{h as default};
