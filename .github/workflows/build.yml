@@ -2,6 +2,8 @@ name: 🔗 构建 pkgbase
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 1,9,17 * * *'
 
 permissions:
   contents: write
@@ -20,19 +22,19 @@ jobs:
           - riscv64
 
     steps:
-      - name: 查看配置
+      - name: 检查配置
         run: |
           date
           uname -r
           free -hg
           pwd
 
-      - name: Checkout
+      - name: 检出
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Build inside FreeBSD VM (${{ matrix.arch }})
+      - name: 在 FreeBSD VM 中构建 (${{ matrix.arch }})
         uses: vmactions/freebsd-vm@v1.3.8
         with:
           release: "15.0"
@@ -71,10 +73,10 @@ jobs:
             mkdir -p "$DEST"
             cp -R -p /usr/obj/usr/src/repo/. "$DEST/"
 
-      - name: 查看构建产物
+      - name: 检查构建产物
         run: |
           ls -al pages-root/
-          du -hs pages-root/
+          du -hs pages-root/ && echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
 
   deploy:
     needs: build
@@ -84,7 +86,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         with:
