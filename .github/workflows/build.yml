@@ -58,7 +58,7 @@ jobs:
             make -j8 buildworld
             make -j8 buildkernel
             make -j8 packages
-            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/
+            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base
             mkdir -p "$DEST"
             cp -R -p /usr/obj/usr/src/repo/. "$DEST/"
 
