@@ -39,6 +39,8 @@ jobs:
           arch: ${{ matrix.arch }}
           sync-time: true
           mem: 12288
+          # 条件传参：riscv64 使用 sync: scp，否则默认
+          sync: ${{ matrix.arch == 'riscv64' && 'scp' || 'true' }}
           run: |
             pkg update -f
             pkg install -y git
@@ -50,12 +52,10 @@ jobs:
             make -j8 buildkernel
             make -j8 packages
 
-            ls -lh /usr/obj/usr/src/repo
-            du -hs /usr/obj/usr/src/repo
-
             DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/${{ matrix.arch }}
             mkdir -p "$DEST"
             cp -a /usr/obj/usr/src/repo/. "$DEST/"
+
 
       - name: 查看构建产物 (${{ matrix.arch }})
         run: |
