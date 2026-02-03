@@ -60,6 +60,7 @@ jobs:
       - name: 查看构建产物 (${{ matrix.arch }})
         run: |
           ls -al pages-root/${{ matrix.arch }}
+          du -hs pages-root/${{ matrix.arch }}
 
   deploy:
     needs: build
