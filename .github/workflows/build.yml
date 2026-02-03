@@ -46,18 +46,26 @@ jobs:
             fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
             tar -xzf main.tar.gz --strip-components=1 -C /usr/src/
             cd /usr/src/
+            grep -n 'include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
+            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/amd64/conf/GENERIC
+            grep -n '^#include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
+            grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/GENERIC
+            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/arm64/conf/GENERIC
+            grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/GENERIC
+            grep -n 'include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
+            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/riscv/conf/GENERIC
+            grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
             make -j8 buildworld
             make -j8 buildkernel
             make -j8 packages
-            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/${{ matrix.arch }}
+            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/
             mkdir -p "$DEST"
-            cp -a /usr/obj/usr/src/repo/. "$DEST/"
+            cp -R -p /usr/obj/usr/src/repo/. "$DEST/"
 
-
-      - name: 查看构建产物 (${{ matrix.arch }})
+      - name: 查看构建产物
         run: |
-          ls -al pages-root/${{ matrix.arch }}
-          du -hs pages-root/${{ matrix.arch }}
+          ls -al pages-root/
+          du -hs pages-root/
 
   deploy:
     needs: build
