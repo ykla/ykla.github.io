@@ -43,6 +43,7 @@ jobs:
           mem: 12288
           # 条件传参：riscv64 使用 sync: scp，否则默认
           sync: ${{ matrix.arch == 'riscv64' && 'scp' || 'true' }}
+          debug-on-error: true
           run: |
             rm -rf /usr/src/*
             fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
@@ -71,12 +72,13 @@ jobs:
             make -s -j5 packages
             DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base
             mkdir -p "$DEST"
-            cp -R -p /usr/obj/usr/src/repo/. "$DEST/"
+            cp -R /usr/obj/usr/src/repo/. "$DEST/"
 
       - name: 检查构建产物
         run: |
           ls -al pages-root/
-          du -hs pages-root/ && echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
+          du -hs pages-root/
+          echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
 
   deploy:
     needs: build
