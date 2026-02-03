@@ -43,7 +43,7 @@ jobs:
           mem: 12288
           # 条件传参：riscv64 使用 sync: scp，否则默认
           sync: ${{ matrix.arch == 'riscv64' && 'scp' || 'true' }}
-          debug: true
+          debug-on-error: true
           run: |
             rm -rf /usr/src/*
             fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
