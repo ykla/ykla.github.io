@@ -1,0 +1,53 @@
+name: 🔗 构建 pkgbase
+
+on: 
+    workflow_dispatch:
+  
+# 设置 GITHUB_TOKEN 的权限，以允许部署到 GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  # 构建工作
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 查看配置
+        run: |
+           date 
+           uname -r
+           free -hg
+           pwd
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # lastUpdated 需要
+      - name: Build inside FreeBSD VM
+        uses: vmactions/freebsd-vm@v1.3.8
+        with:
+          release: "15.0"
+          arch: x86_64
+          sync-time: true
+          mem: 12288
+          run: |
+            pkg update -f 
+            ls -l /home/runner/work/
+            ls -l /home/runner/work/ykla.github.io/ykla.github.io/
+            pwd
+            pkg ins -y git
+            cd /usr/src
+            git clone --depth=1 https://github.com/freebsd/freebsd-src.git /usr/src
+            make -j8 buildworld && make -j8 buildkernel && make -j8 packages
+            ls -l
+            ls -l /usr/obj/usr/src/repo
+            du -hs /usr/obj/usr/src/repo
+            cp -a /usr/obj/usr/src/repo/* /home/runner/work/ykla.github.io/ykla.github.io
+
+      - name: 复制首页
+        run:  |
+          ls -al /home/runner/work/ykla.github.io/ykla.github.io
+          pwd
+          
+        
