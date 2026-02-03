@@ -46,17 +46,26 @@ jobs:
             fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
             tar -xzf main.tar.gz --strip-components=1 -C /usr/src/
             cd /usr/src/
+            ceho '注释 amd64 中的开发功能'
             grep -n 'include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
             sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/amd64/conf/GENERIC
+            ceho '检查 amd64 中的开发功能是否被成功注释'
             grep -n '^#include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
-            grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/GENERIC
-            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/arm64/conf/GENERIC
-            grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/GENERIC
+            ceho '注释 arm64 中的开发功能'
+            grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/std.arm64
+            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/arm64/conf/std.arm64
+            ceho '检查 arm64 中的开发功能是否被成功注释'
+            grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/std.arm64
+            ceho '注释 riscv 中的开发功能'
             grep -n 'include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
             sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/riscv/conf/GENERIC
+            ceho '检查 armriscv64 中的开发功能是否被成功注释'
             grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
+            ceho '开始构建世界'
             make -j8 buildworld
+            ceho '开始构建内核'
             make -j8 buildkernel
+            ceho '开始构建软件包'
             make -j8 packages
             DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base
             mkdir -p "$DEST"
