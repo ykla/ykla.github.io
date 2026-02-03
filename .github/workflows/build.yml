@@ -62,11 +62,11 @@ jobs:
             echo '检查 armriscv64 中的开发功能是否被成功注释'
             grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
             echo '开始构建世界'
-            make -j8 buildworld
+            make -s -j5 buildworld
             echo '开始构建内核'
-            make -j8 buildkernel
+            make -s -j5 buildkernel
             echo '开始构建软件包'
-            make -j8 packages
+            make -s -j5 packages
             DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base
             mkdir -p "$DEST"
             cp -R -p /usr/obj/usr/src/repo/. "$DEST/"
