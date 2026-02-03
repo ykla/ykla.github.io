@@ -42,16 +42,13 @@ jobs:
           # 条件传参：riscv64 使用 sync: scp，否则默认
           sync: ${{ matrix.arch == 'riscv64' && 'scp' || 'true' }}
           run: |
-            pkg update -f
-            pkg install -y git
-
-            cd /usr/src
-            git clone --depth=1 https://github.com/freebsd/freebsd-src.git /usr/src
-
+            rm -rf /usr/src/*
+            fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
+            tar -xzf freebsd-src.tar.gz --strip-components=1 -C /usr/src/
+            cd /usr/src/
             make -j8 buildworld
             make -j8 buildkernel
             make -j8 packages
-
             DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/${{ matrix.arch }}
             mkdir -p "$DEST"
             cp -a /usr/obj/usr/src/repo/. "$DEST/"
