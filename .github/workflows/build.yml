@@ -43,7 +43,6 @@ jobs:
           mem: 10240
           debug-on-error: true
           run: |
-
             TARGET_ARCH=${{ matrix.target }}
 
             rm -rf /usr/src/*
@@ -100,6 +99,11 @@ jobs:
           du -hs pages-root/freebsd-base/*/
           echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
 
+      - name: 上传 Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-root
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -111,5 +115,3 @@ jobs:
       - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          path: pages-root
