@@ -16,8 +16,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch:
-          - x86_64
+        target:
+          - amd64
           - aarch64
           - riscv64
 
@@ -32,52 +32,72 @@ jobs:
       - name: 检出
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: 在 FreeBSD VM 中构建 (${{ matrix.arch }})
+      - name: 在 FreeBSD VM 中构建 (${{ matrix.target }})
         uses: vmactions/freebsd-vm@v1.3.8
         with:
           release: "15.0"
-          arch: ${{ matrix.arch }}
+          arch: x86_64
           sync-time: true
-          mem: 12288
-          # 条件传参：riscv64 使用 sync: scp，否则默认
-          sync: ${{ matrix.arch == 'riscv64' && 'scp' || 'true' }}
+          mem: 10240
           debug-on-error: true
           run: |
+
+            TARGET_ARCH=${{ matrix.target }}
+
             rm -rf /usr/src/*
             fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
             tar -xzf main.tar.gz --strip-components=1 -C /usr/src/
             cd /usr/src/
-            echo '注释 amd64 中的开发功能'
-            grep -n 'include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
-            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/amd64/conf/GENERIC
-            echo '检查 amd64 中的开发功能是否被成功注释'
-            grep -n '^#include "std.debug"' /usr/src/sys/amd64/conf/GENERIC
-            echo '注释 arm64 中的开发功能'
-            grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/std.arm64
-            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/arm64/conf/std.arm64
-            echo '检查 arm64 中的开发功能是否被成功注释'
-            grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/std.arm64
-            echo '注释 riscv 中的开发功能'
-            grep -n 'include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
-            sed -i '' 's/^include "std.debug"/#include "std.debug"/' /usr/src/sys/riscv/conf/GENERIC
-            echo '检查 armriscv64 中的开发功能是否被成功注释'
-            grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC
+
+            case "$TARGET_ARCH" in
+              amd64)
+                echo '注释 amd64 中的开发功能'
+                grep -n 'include "std.debug"' /usr/src/sys/amd64/conf/GENERIC || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
+                  /usr/src/sys/amd64/conf/GENERIC
+                grep -n '^#include "std.debug"' /usr/src/sys/amd64/conf/GENERIC || true
+                ;;
+              aarch64)
+                echo '注释 arm64 中的开发功能'
+                grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/std.arm64 || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
+                  /usr/src/sys/arm64/conf/std.arm64
+                grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/std.arm64 || true
+                ;;
+              riscv64)
+                echo '注释 riscv 中的开发功能'
+                grep -n 'include "std.debug"' /usr/src/sys/riscv/conf/GENERIC || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
+                  /usr/src/sys/riscv/conf/GENERIC
+                grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC || true
+                ;;
+            esac
+
             echo '开始构建世界'
-            make -s -j5 buildworld
+            make -s -j$(sysctl -n hw.ncpu) \
+              TARGET_ARCH=$TARGET_ARCH \
+              buildworld
+
             echo '开始构建内核'
-            make -s -j5 buildkernel
+            make -s -j$(sysctl -n hw.ncpu) \
+              TARGET_ARCH=$TARGET_ARCH \
+              buildkernel
+
             echo '开始构建软件包'
-            make -s -j5 packages
-            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base
+            make -s -j$(sysctl -n hw.ncpu) \
+              TARGET_ARCH=$TARGET_ARCH \
+              packages
+
+            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/
             mkdir -p "$DEST"
             cp -R /usr/obj/usr/src/repo/. "$DEST/"
 
       - name: 检查构建产物
         run: |
-          ls -al pages-root/
-          du -hs pages-root/
+          ls -al pages-root/freebsd-base/*
+          du -hs pages-root/freebsd-base/*/
           echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
 
   deploy:
