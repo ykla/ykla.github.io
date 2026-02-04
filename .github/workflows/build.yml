@@ -89,7 +89,7 @@ jobs:
               TARGET_ARCH=$TARGET_ARCH \
               packages
 
-            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/
+            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/$TARGET_ARCH
             mkdir -p "$DEST"
             cp -R /usr/obj/usr/src/repo/. "$DEST/"
 
