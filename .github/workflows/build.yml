@@ -22,20 +22,13 @@ jobs:
           - riscv64
 
     steps:
-      - name: 检查配置
-        run: |
-          date
-          uname -r
-          free -hg
-          pwd
-
       - name: 检出
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: 在 FreeBSD VM 中构建 (${{ matrix.target }})
-        uses: vmactions/freebsd-vm@v1.3.9
+        uses: vmactions/freebsd-vm@v1.3.8
         with:
           release: "15.0"
           arch: x86_64
@@ -52,52 +45,59 @@ jobs:
 
             case "$TARGET_ARCH" in
               amd64)
-                echo '注释 amd64 中的开发功能'
-                grep -n 'include "std.debug"' /usr/src/sys/amd64/conf/GENERIC || true
-                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
-                  /usr/src/sys/amd64/conf/GENERIC
-                grep -n '^#include "std.debug"' /usr/src/sys/amd64/conf/GENERIC || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' sys/amd64/conf/GENERIC || true
                 ;;
               aarch64)
-                echo '注释 arm64 中的开发功能'
-                grep -n 'include "std.debug"' /usr/src/sys/arm64/conf/std.arm64 || true
-                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
-                  /usr/src/sys/arm64/conf/std.arm64
-                grep -n '^#include "std.debug"' /usr/src/sys/arm64/conf/std.arm64 || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' sys/arm64/conf/std.arm64 || true
                 ;;
               riscv64)
-                echo '注释 riscv 中的开发功能'
-                grep -n 'include "std.debug"' /usr/src/sys/riscv/conf/GENERIC || true
-                sed -i '' 's/^include "std.debug"/#include "std.debug"/' \
-                  /usr/src/sys/riscv/conf/GENERIC
-                grep -n '^#include "std.debug"' /usr/src/sys/riscv/conf/GENERIC || true
+                sed -i '' 's/^include "std.debug"/#include "std.debug"/' sys/riscv/conf/GENERIC || true
                 ;;
             esac
 
-            echo '开始构建世界'
-            make -s -j$(sysctl -n hw.ncpu) \
-              TARGET_ARCH=$TARGET_ARCH \
-              buildworld
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
 
-            echo '开始构建内核'
-            make -s -j$(sysctl -n hw.ncpu) \
-              TARGET_ARCH=$TARGET_ARCH \
-              buildkernel
-
-            echo '开始构建软件包'
-            make -s -j$(sysctl -n hw.ncpu) \
-              TARGET_ARCH=$TARGET_ARCH \
-              packages
-
-            DEST=/home/runner/work/ykla.github.io/ykla.github.io/pages-root/freebsd-base/$TARGET_ARCH
+            DEST=out/freebsd-base/$TARGET_ARCH
             mkdir -p "$DEST"
             cp -R /usr/obj/usr/src/repo/. "$DEST/"
 
-      - name: 检查构建产物
+      - name: 上传中间构建产物 (${{ matrix.target }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: freebsd-${{ matrix.target }}
+          path: out
+          retention-days: 1
+
+  pages:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 下载 amd64
+        uses: actions/download-artifact@v4
+        with:
+          name: freebsd-amd64
+          path: pages-root
+
+      - name: 下载 aarch64
+        uses: actions/download-artifact@v4
+        with:
+          name: freebsd-aarch64
+          path: pages-root
+
+      - name: 下载 riscv64
+        uses: actions/download-artifact@v4
+        with:
+          name: freebsd-riscv64
+          path: pages-root
+
+      - name: 生成 README
         run: |
-          ls -al pages-root/freebsd-base/*
-          du -hs pages-root/freebsd-base/*/
           echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
+          ls -al pages-root/freebsd-base
+          du -hs pages-root/freebsd-base/*/
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
@@ -105,6 +105,16 @@ jobs:
           path: pages-root
 
   deploy:
+    needs: pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4  deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
