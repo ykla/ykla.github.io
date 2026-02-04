@@ -59,7 +59,7 @@ jobs:
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
 
-            DEST=out/freebsd-base/$TARGET_ARCH
+            DEST=out/$TARGET_ARCH
             mkdir -p "$DEST"
             cp -R /usr/obj/usr/src/repo/. "$DEST/"
 
@@ -96,8 +96,8 @@ jobs:
       - name: 生成 README
         run: |
           echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
-          ls -al pages-root/freebsd-base
-          du -hs pages-root/freebsd-base/*/
+          ls -al pages-root/
+          du -hs pages-root/*/
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
@@ -106,16 +106,6 @@ jobs:
 
   deploy:
     needs: pages
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: 部署到 GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4  deploy:
-    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
