@@ -2,8 +2,8 @@ name: 🔗 构建 pkgbase
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 1,9,17 * * *'
+#  schedule:
+#    - cron: '0 1,9,17 * * *'
 
 permissions:
   contents: write
@@ -26,6 +26,10 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+
+      - name: 初始化输出目录 (${{ matrix.target }})
+        run: |
+          mkdir -p pages-root
 
       - name: 在 FreeBSD VM 中构建 (${{ matrix.target }})
         uses: vmactions/freebsd-vm@v1.3.9
@@ -59,45 +63,65 @@ jobs:
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
 
-            DEST=out/$TARGET_ARCH
-            mkdir -p "$DEST"
-            cp -R /usr/obj/usr/src/repo/. "$DEST/"
+            # 直接复制到 pages-root
+            mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root && cp -R /usr/obj/usr/src/repo/. "/home/runner/work/ykla.github.io/ykla.github.io/pages-root/"
 
       - name: 上传中间构建产物 (${{ matrix.target }})
         uses: actions/upload-artifact@v4
         with:
           name: freebsd-${{ matrix.target }}
-          path: out
-          retention-days: 1
+          path: pages-root/
 
   pages:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: 下载 amd64
+      - name: 下载所有构建产物
+        run: |
+          mkdir -p pages-root
+          
+      - name: 下载 amd64 构建产物
         uses: actions/download-artifact@v4
         with:
           name: freebsd-amd64
           path: pages-root
 
-      - name: 下载 aarch64
+      - name: 下载 aarch64 构建产物
         uses: actions/download-artifact@v4
         with:
           name: freebsd-aarch64
           path: pages-root
 
-      - name: 下载 riscv64
+      - name: 下载 riscv64 构建产物
         uses: actions/download-artifact@v4
         with:
           name: freebsd-riscv64
           path: pages-root
 
+      - name: 生成索引文件
+        run: |
+          echo "# FreeBSD Packages Repository" > pages-root/index.html
+          echo "<h1>FreeBSD Packages Repository</h1>" >> pages-root/index.html
+          echo "<p>Last updated: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S %Z')</p>" >> pages-root/index.html
+          echo "<p>Architectures: amd64, aarch64, riscv64</p>" >> pages-root/index.html
+
       - name: 生成 README
         run: |
-          echo "# 当前软件包构建完成时间（北京时间）"$'\n\n'"$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" > pages-root/README.md
-          ls -al pages-root/
-          du -hs pages-root/*/
+          echo "# FreeBSD Packages Repository" > pages-root/README.md
+          echo "" >> pages-root/README.md
+          echo "## 当前软件包构建完成时间（北京时间）" >> pages-root/README.md
+          echo "$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')" >> pages-root/README.md
+          echo "" >> pages-root/README.md
+          echo "## 支持的架构" >> pages-root/README.md
+          echo "- amd64" >> pages-root/README.md
+          echo "- aarch64" >> pages-root/README.md
+          echo "- riscv64" >> pages-root/README.md
+          echo "" >> pages-root/README.md
+          echo "## 目录结构" >> pages-root/README.md
+          echo '```' >> pages-root/README.md
+          ls -la pages-root/ >> pages-root/README.md
+          echo '```' >> pages-root/README.md
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
