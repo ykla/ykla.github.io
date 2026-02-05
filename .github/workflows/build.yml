@@ -73,7 +73,7 @@ jobs:
         with:
           name: freebsd-${{ matrix.target }}
           path: pages-root/
-          include-hidden-files: ture
+          include-hidden-files: true
 
   pages:
     needs: build
