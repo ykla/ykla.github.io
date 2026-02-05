@@ -85,19 +85,19 @@ jobs:
           mkdir -p pages-root
           
       - name: 下载 amd64 构建产物
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: freebsd-amd64
           path: pages-root
 
       - name: 下载 aarch64 构建产物
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: freebsd-aarch64
           path: pages-root
 
       - name: 下载 riscv64 构建产物
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: freebsd-riscv64
           path: pages-root
