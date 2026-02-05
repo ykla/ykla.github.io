@@ -64,13 +64,16 @@ jobs:
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
 
             # 直接复制到 pages-root
-            mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root && cp -R /usr/obj/usr/src/repo/. "/home/runner/work/ykla.github.io/ykla.github.io/pages-root/"
+            mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
+            for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "${d//:/-}"; done
+            cp -R /usr/obj/usr/src/repo/FreeBSD-16-* /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
 
       - name: 上传中间构建产物 (${{ matrix.target }})
         uses: actions/upload-artifact@v4
         with:
           name: freebsd-${{ matrix.target }}
           path: pages-root/
+          include-hidden-files: ture
 
   pages:
     needs: build
