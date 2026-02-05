@@ -65,7 +65,7 @@ jobs:
 
             # 直接复制到 pages-root
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
-            for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "${d//:/-}"; done
+            for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
 
       - name: 上传中间构建产物 (${{ matrix.target }})
