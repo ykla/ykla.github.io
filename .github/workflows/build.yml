@@ -106,9 +106,6 @@ jobs:
         run: |
          BUILD_TIME="$(date -u '+%Y-%m-%d %H:%M:%S UTC')" && printf '%s\n' '<!DOCTYPE html>' '<html lang="zh-CN">' '<head>' '    <meta charset="UTF-8">' '    <meta name="viewport" content="width=device-width, initial-scale=1">' '    <title>Index of /</title>' '    <style>' '        body { font-family: monospace; background-color: #ffffff; color: #000000; }' '        a { color: #0000ee; text-decoration: none; }' '        a:hover { text-decoration: underline; }' '        pre { font-size: 14px; line-height: 1.4; }' '        hr { border: none; border-top: 1px solid #000; margin: 10px 0; }' '    </style>' '</head>' '<body>' '<h1>Index of /</h1>' '<hr>' '<pre>' '<a href="../">../</a>' '<a href="FreeBSD-16-amd64/">FreeBSD-16-amd64/</a>' '<a href="FreeBSD-16-aarch64/">FreeBSD-16-aarch64/</a>' '<a href="FreeBSD-16-riscv64/">FreeBSD-16-riscv64/</a>' '' "Last modified: $BUILD_TIME" '</pre>' '<hr>' '</body>' '</html>' > pages-root/index.html
 
-      - name: 生成 README
-        run: |
-
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
