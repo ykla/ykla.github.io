@@ -18,8 +18,8 @@ jobs:
       matrix:
         target:
           - amd64
-          - aarch64
-          - riscv64
+#          - aarch64
+#          - riscv64
 
     steps:
       - name: 检出
@@ -37,7 +37,7 @@ jobs:
           release: "15.0"
           arch: x86_64
           sync-time: true
-          mem: 8192
+          mem: 10240
 #          debug-on-error: true
           run: |
             TARGET_ARCH=${{ matrix.target }}
