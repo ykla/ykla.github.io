@@ -19,7 +19,7 @@ jobs:
         target:
           - amd64
           - aarch64
-          - riscv64
+#          - riscv64
 
     steps:
       - name: 检出
@@ -96,11 +96,11 @@ jobs:
           name: freebsd-aarch64
           path: pages-root
 
-      - name: 下载 riscv64 构建产物
-        uses: actions/download-artifact@v7
-        with:
-          name: freebsd-riscv64
-          path: pages-root
+#      - name: 下载 riscv64 构建产物
+#        uses: actions/download-artifact@v7
+#        with:
+#          name: freebsd-riscv64
+#          path: pages-root
 
       - name: 生成索引文件
         run: |
@@ -124,15 +124,14 @@ jobs:
              </style>
          </head>
          <body>
-         <h1>Index of /</h1>
+         <h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1>
          <hr>
          <pre>
          <a href="../">../</a>
          <a href="FreeBSD-16-amd64/">FreeBSD-16-amd64/</a>
          <a href="FreeBSD-16-aarch64/">FreeBSD-16-aarch64/</a>
-         <a href="FreeBSD-16-riscv64/">FreeBSD-16-riscv64/</a>
 
-         Generated on: ${BUILD_TIME}
+         本页最后生成于: ${BUILD_TIME}
          </pre>
          <hr>
          </body>
