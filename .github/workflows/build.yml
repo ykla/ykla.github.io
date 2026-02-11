@@ -18,7 +18,7 @@ jobs:
       matrix:
         target:
           - amd64
-          - aarch64
+#          - aarch64
 #          - riscv64
 
     steps:
@@ -90,11 +90,11 @@ jobs:
           name: freebsd-amd64
           path: pages-root
 
-      - name: 下载 aarch64 构建产物
-        uses: actions/download-artifact@v7
-        with:
-          name: freebsd-aarch64
-          path: pages-root
+#      - name: 下载 aarch64 构建产物
+#        uses: actions/download-artifact@v7
+#        with:
+#          name: freebsd-aarch64
+#          path: pages-root
 
 #      - name: 下载 riscv64 构建产物
 #        uses: actions/download-artifact@v7
@@ -129,8 +129,6 @@ jobs:
          <pre>
          <a href="../">../</a>
          <a href="FreeBSD-16-amd64/">FreeBSD-16-amd64/</a>
-         <a href="FreeBSD-16-aarch64/">FreeBSD-16-aarch64/</a>
-
          本页最后生成于: ${BUILD_TIME}
          </pre>
          <hr>
