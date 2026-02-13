@@ -104,37 +104,59 @@ jobs:
 
       - name: 生成索引文件
         run: |
-         BUILD_TIME="$(date -u '+%Y-%m-%d %H:%M:%S UTC')" && cat > pages-root/index.html <<EOF
-         <!DOCTYPE html>
-         <html lang="zh-CN">
-         <head>
-             <meta charset="UTF-8">
-             <meta name="viewport" content="width=device-width, initial-scale=1">
-             <title>Index of /</title>
-             <style>
-                 body {
-                              font-family: monospace;
-                     background-color: #ffffff;
-                     color: #000000;
-                 }
-                 a { color: #0000ee; text-decoration: none; }
-                 a:hover { text-decoration: underline; }
-                 pre { font-size: 14px; line-height: 1.4; }
-                 hr { border: none; border-top: 1px solid #000; margin: 10px 0; }
-             </style>
-         </head>
-         <body>
-         <h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1>
-         <hr>
-         <pre>
-         <a href="../">../</a>
-         <a href="FreeBSD-16-amd64/">FreeBSD-16-amd64/</a>
-         本页最后生成于: ${BUILD_TIME}
-         </pre>
-         <hr>
-         </body>
-         </html>
-         EOF
+          export TZ=Asia/Shanghai
+          BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S UTC+8')"
+          TARGET_DIR="pages-root/FreeBSD-16-amd64"
+
+          generate_index() {
+            DIR="$1"
+            OUTPUT="$DIR/index.html"
+
+            {
+              echo '<!DOCTYPE html>'
+              echo '<html lang="zh-CN">'
+              echo '<head>'
+              echo '  <meta charset="UTF-8">'
+              echo '  <meta name="viewport" content="width=device-width, initial-scale=1">'
+              echo "  <title>Index of /${DIR#pages-root/}</title>"
+              echo '  <style>'
+              echo '    body { font-family: monospace; background:#fff; color:#000; }'
+              echo '    a { color:#00e; text-decoration:none; }'
+              echo '    a:hover { text-decoration:underline; }'
+              echo '    table { border-collapse:collapse; }'
+              echo '    th, td { padding:4px 12px; text-align:left; }'
+              echo '    th { border-bottom:1px solid #000; }'
+              echo '  </style>'
+              echo '</head>'
+              echo '<body>'
+              echo "<h1>Index of /${DIR#pages-root/}</h1>"
+              echo '<table>'
+              echo '<tr><th>文件名</th><th>最后变动时间 (UTC+8)</th><th>Size</th></tr>'
+
+              if [ "$DIR" != "pages-root/FreeBSD-16-amd64" ]; then
+                echo '<tr><td><a href="../">../</a></td><td></td><td></td></tr>'
+              fi
+
+              for f in "$DIR"/*; do
+                NAME=$(basename "$f")
+
+                if [ -d "$f" ]; then
+                  MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
+                  echo "<tr><td><a href=\"$NAME/\">$NAME/</a></td><td>$MTIME</td><td>-</td></tr>"
+                else
+                  SIZE=$(du -h "$f" | cut -f1)
+                  MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
+                  echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
+                fi
+              done
+
+              echo '</table>'
+              echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
+              echo '</body></html>'
+            } > "$OUTPUT"
+          }
+
+          generate_index "$TARGET_DIR"
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
