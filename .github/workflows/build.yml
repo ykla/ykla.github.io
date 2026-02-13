@@ -129,9 +129,9 @@ jobs:
               echo '  </style>'
               echo '</head>'
               echo '<body>'
-              echo "<h1>Index of /${DIR#pages-root/}</h1>"
+              echo "<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1><h2>Index of /${DIR#pages-root/}</h2>"
               echo '<table>'
-              echo '<tr><th>文件名</th><th>最后变动时间 (UTC+8)</th><th>Size</th></tr>'
+              echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
 
               if [ "$DIR" != "pages-root/FreeBSD-16-amd64" ]; then
                 echo '<tr><td><a href="../">../</a></td><td></td><td></td></tr>'
