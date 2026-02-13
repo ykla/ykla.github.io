@@ -105,63 +105,79 @@ jobs:
       - name: 生成索引文件
         run: |
           export TZ=Asia/Shanghai
-          BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S UTC+8')"
-          TARGET_DIR="pages-root/FreeBSD-16-amd64"
 
-          generate_index() {
-            DIR="$1"
-            OUTPUT="$DIR/index.html"
-
-            {
-              echo '<!DOCTYPE html>'
-              echo '<html lang="zh-CN">'
-              echo '<head>'
-              echo '  <meta charset="UTF-8">'
-              echo '  <meta name="viewport" content="width=device-width, initial-scale=1">'
-              echo "  <title>Index of /${DIR#pages-root/}</title>"
-              echo '  <style>'
-              echo '    body { font-family: monospace; background:#fff; color:#000; }'
-              echo '    a { color:#00e; text-decoration:none; }'
-              echo '    a:hover { text-decoration:underline; }'
-              echo '    table { border-collapse:collapse; }'
-              echo '    th, td { padding:4px 12px; text-align:left; }'
-              echo '    th { border-bottom:1px solid #000; }'
-              echo '  </style>'
-              echo '</head>'
-              echo '<body>'
-              echo "<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1><h2>Index of /${DIR#pages-root/}</h2>"
-              echo '<table>'
-              echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
-
-              if [ "$DIR" != "pages-root/FreeBSD-16-amd64" ]; then
-                echo '<tr><td><a href="../">../</a></td><td></td><td></td></tr>'
-              fi
-
-              for f in "$DIR"/*; do
-                NAME=$(basename "$f")
-
-                if [ -d "$f" ]; then
-                  MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
-                  echo "<tr><td><a href=\"$NAME/\">$NAME/</a></td><td>$MTIME</td><td>-</td></tr>"
-                else
-                  SIZE=$(du -h "$f" | cut -f1)
-                  MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
-                  echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
+          generate_index_recursive() {
+              DIR="$1"                     # 当前目录
+              REL_PATH="${2:-}"             # 相对于 pages-root 的路径，用于标题和链接
+              OUTPUT="$DIR/index.html"
+              BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')"  # 东八区时间
+          
+              {
+                echo '<!DOCTYPE html>'
+                echo '<html lang="zh-CN">'
+                echo '<head>'
+                echo '  <meta charset="UTF-8">'
+                echo '  <meta name="viewport" content="width=device-width, initial-scale=1">'
+                echo "  <title>Index of /${REL_PATH}</title>"
+                echo '  <style>'
+                echo '    body { font-family: monospace; background:#fff; color:#000; }'
+                echo '    a { color:#00e; text-decoration:none; }'
+                echo '    a:hover { text-decoration:underline; }'
+                echo '    table { border-collapse:collapse; }'
+                echo '    th, td { padding:4px 12px; text-align:left; }'
+                echo '    th { border-bottom:1px solid #000; }'
+                echo '  </style>'
+                echo '</head>'
+                echo '<body>'
+                echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1>'
+                echo "<h2>Index of /${REL_PATH}</h2>"
+                echo '<table>'
+                echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
+                if [ "$REL_PATH" != "" ]; then
+                  echo '<tr><td><a href="../index.html">../</a></td><td></td><td></td></tr>'
                 fi
+                for f in "$DIR"/*; do
+                  NAME=$(basename "$f")
+                  [ "$NAME" = "index.html" ] && continue  # 排除自己
+          
+                  if [ -d "$f" ]; then
+                              MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
+                    echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>-</td></tr>"
+                  else
+                    SIZE=$(du -h "$f" | cut -f1)
+                    MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
+                    echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
+                  fi
+                done
+                echo '</table>'
+                echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
+                echo '</body></html>'
+              } > "$OUTPUT"
+
+              for sub in "$DIR"/*/; do
+                [ -d "$sub" ] || continue
+                SUB_NAME=$(basename "$sub")
+                SUB_REL_PATH="${REL_PATH}${SUB_NAME}/"
+                generate_index_recursive "$sub" "$SUB_REL_PATH"
               done
-
-              echo '</table>'
-              echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
-              echo '</body></html>'
-            } > "$OUTPUT"
           }
-
-          generate_index "$TARGET_DIR"
-
+          generate_index_recursive "pages-root"
+          
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: pages-root
+
+      - name: 复制 artifact 到服务器
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: pages-root/*
+          target: ${{ secrets.HTML }}
+          rm: true
 
   deploy:
     needs: pages
