@@ -37,7 +37,7 @@ jobs:
           release: "15.0"
           arch: x86_64
           sync-time: true
-          mem: 10240
+          mem: 8192
 #          debug-on-error: true
           run: |
             TARGET_ARCH=${{ matrix.target }}
