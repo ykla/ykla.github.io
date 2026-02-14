@@ -168,16 +168,16 @@ jobs:
         with:
           path: pages-root
 
-      - name: 复制 artifact 到服务器
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          source: pages-root/*
-          target: ${{ secrets.HTML }}
-          rm: true
+#      - name: 复制 artifact 到服务器
+#        uses: appleboy/scp-action@v1
+#        with:
+#          host: ${{ secrets.HOST }}
+#          username: ${{ secrets.USERNAME }}
+#          password: ${{ secrets.PASSWORD }}
+#          port: ${{ secrets.PORT }}
+#          source: pages-root/*
+#          target: ${{ secrets.HTML }}
+#          rm: true
 
   deploy:
     needs: pages
