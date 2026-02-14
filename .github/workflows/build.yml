@@ -2,8 +2,8 @@ name: 🔗 构建 pkgbase
 
 on:
   workflow_dispatch:
-#  schedule:
-#    - cron: '0 1,9,17 * * *'
+  schedule:
+    - cron: '0 1,9,17 * * *'
 
 permissions:
   contents: write
