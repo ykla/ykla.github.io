@@ -133,7 +133,7 @@ jobs:
                 echo '  </style>'
                 echo '</head>'
                 echo '<body>'
-                echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项）</h1>'
+                echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项 std.debug）</h1>'
                 echo "<h2>Index of /${REL_PATH}</h2>"
                 echo '<table>'
                 echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
