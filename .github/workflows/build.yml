@@ -46,10 +46,10 @@ jobs:
           run: |
             TARGET_ARCH=${{ matrix.target }}
             pkg update -f  # 注意，riscv 默认无 pkg 源
-            pkg ins -y git ccache4
-            ls -al /usr/local/libexec/ccache
-            echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
-            ccache -M 2G
+            pkg ins -y git # ccache4
+#            ls -al /usr/local/libexec/ccache
+#            echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+#            ccache -M 2G
             cd /usr/src
             git init
             git remote add origin https://github.com/freebsd/freebsd-src.git
