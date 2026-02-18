@@ -45,7 +45,8 @@ jobs:
 #          debug-on-error: true
           run: |
             TARGET_ARCH=${{ matrix.target }}
-            pkg update -f  # 注意，riscv 默认无 pkg 源 
+            pkg update -f  # 注意，riscv 默认无 pkg 源
+            pkg ins -y git
             cd /usr/src
             git init
             git remote add origin https://github.com/freebsd/freebsd-src.git
