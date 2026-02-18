@@ -46,10 +46,7 @@ jobs:
           run: |
             TARGET_ARCH=${{ matrix.target }}
             pkg update -f  # 注意，riscv 默认无 pkg 源
-            pkg ins -y git # ccache4
-#            ls -al /usr/local/libexec/ccache
-#            echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
-#            ccache -M 2G
+            pkg ins -y git 
             cd /usr/src
             git init
             git remote add origin https://github.com/freebsd/freebsd-src.git
@@ -73,7 +70,6 @@ jobs:
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
-#            ccache -s
             # 直接复制到 pages-root
             for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
