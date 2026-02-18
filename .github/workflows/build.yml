@@ -45,11 +45,14 @@ jobs:
 #          debug-on-error: true
           run: |
             TARGET_ARCH=${{ matrix.target }}
-
-            rm -rf /usr/src/*
-            fetch https://github.com/freebsd/freebsd-src/archive/refs/heads/main.tar.gz
-            tar -xzf main.tar.gz --strip-components=1 -C /usr/src/
-            cd /usr/src/
+            pkg update -f  # 注意，riscv 默认无 pkg 源 
+            cd /usr/src
+            git init
+            git remote add origin https://github.com/freebsd/freebsd-src.git
+            git fetch
+            git checkout main
+            mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
+            TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/githead.txt
 
             case "$TARGET_ARCH" in
               amd64)
@@ -68,7 +71,6 @@ jobs:
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
 
             # 直接复制到 pages-root
-            mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
             for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
 
@@ -134,6 +136,11 @@ jobs:
                 echo '</head>'
                 echo '<body>'
                 echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项 std.debug）</h1>'
+                echo '<p>本站所有时间均为北京时间</p>'
+                echo '<h3>当前构建提交信息</h3>'
+                echo '<pre>'
+                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' githead.txt
+                echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
                 echo '<table>'
                 echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
@@ -142,7 +149,7 @@ jobs:
                 fi
                 for f in "$DIR"/*; do
                   NAME=$(basename "$f")
-                  [ "$NAME" = "index.html" ] && continue  # 排除自己
+                  [[ "$NAME" = "index.html" || "$NAME" = "githead.txt" ]] && continue # 排除自己
           
                   if [ -d "$f" ]; then
                               MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
@@ -155,6 +162,7 @@ jobs:
                 done
                 echo '</table>'
                 echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
+                echo '<p>FreeBSD 中文社区赞助</p>'
                 echo '</body></html>'
               } > "$OUTPUT"
 
