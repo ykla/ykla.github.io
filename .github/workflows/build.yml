@@ -44,6 +44,7 @@ jobs:
           mem: 8192
 #          debug-on-error: true
           run: |
+            export TZ=Asia/Shanghai
             TARGET_ARCH=${{ matrix.target }}
             pkg update -f  # 注意，riscv 默认无 pkg 源
             pkg ins -y git 
@@ -72,7 +73,8 @@ jobs:
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
             for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
-            cd /usr/src && TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/githead.txt
+            cd /usr/src
+            TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
             ls -al /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             du -sh /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             
@@ -147,7 +149,7 @@ jobs:
                 pwd
                 ls -al
                 ls -al ../*
-                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/githead.txt
+                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/commit.txt
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
                 echo '<table>'
@@ -157,7 +159,7 @@ jobs:
                 fi
                 for f in "$DIR"/*; do
                   NAME=$(basename "$f")
-                  [[ "$NAME" = "index.html" || "$NAME" = "githead.txt" ]] && continue # 排除自己
+                  [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue # 排除自己
           
                   if [ -d "$f" ]; then
                               MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
