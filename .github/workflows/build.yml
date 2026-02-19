@@ -49,6 +49,7 @@ jobs:
             pkg update -f  # 注意，riscv 默认无 pkg 源
             pkg ins -y git 
             cd /usr/src
+            git config set advice.defaultBranchName false
             git init
             git remote add origin https://github.com/freebsd/freebsd-src.git
             git fetch
