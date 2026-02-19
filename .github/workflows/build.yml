@@ -48,13 +48,13 @@ jobs:
             TARGET_ARCH=${{ matrix.target }}
             pkg update -f  # 注意，riscv 默认无 pkg 源
             pkg ins -y git 
-            git config set advice.defaultBranchName false
-            mkrir -p /usr/src
+            mkdir -p /usr/src
             cd /usr/src
+            git config --global advice.defaultBranchName false
             git init
             git remote add origin https://github.com/freebsd/freebsd-src.git
-            git fetch
-            git checkout main
+            git fetch origin
+            git checkout -b main origin/main
 
             case "$TARGET_ARCH" in
               amd64)
