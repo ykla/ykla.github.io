@@ -67,13 +67,13 @@ jobs:
                 ;;
             esac
 
-            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
-            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
-            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
             # 直接复制到 pages-root
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
-            #for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
-            #cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
+            for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
+            cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             cd /usr/src
             TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
             ls -al /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
@@ -145,11 +145,10 @@ jobs:
                 echo '<body>'
                 echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项 std.debug）</h1>'
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
+                echo '<br>'
+                echo '<p>本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre>'
-                pwd
-                ls -al
-                ls -al ../*
                 sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/commit.txt
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
