@@ -66,13 +66,13 @@ jobs:
                 ;;
             esac
 
-            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
-            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
-            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
+            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
+            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
+            #make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
             # 直接复制到 pages-root
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
-            for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
-            cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
+            #for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
+            #cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             cd /usr/src
             TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
             ls -al /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
