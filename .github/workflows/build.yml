@@ -73,7 +73,9 @@ jobs:
             for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             cd /usr/src && TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/githead.txt
-
+            ls -al /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
+            du -sh /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
+            
       - name: 上传中间构建产物 (${{ matrix.target }})
         uses: actions/upload-artifact@v6
         with:
@@ -111,6 +113,9 @@ jobs:
       - name: 生成索引文件
         run: |
           export TZ=Asia/Shanghai
+          pwd
+          ls -al
+          ls -al */*
 
           generate_index_recursive() {
               DIR="$1"                     # 当前目录
@@ -139,6 +144,9 @@ jobs:
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre>'
+                pwd
+                ls -al
+                ls -al ../*
                 sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/githead.txt
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
@@ -155,7 +163,7 @@ jobs:
                               MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
                     echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>-</td></tr>"
                   else
-                    SIZE=$(du -h "$f" | cut -f1)
+                    SIZE=$(du -sh "$f" | cut -f1)
                     MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
                     echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
                   fi
@@ -174,7 +182,8 @@ jobs:
               done
           }
           generate_index_recursive "pages-root"
-          
+          pwd
+          ls -al
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
         with:
