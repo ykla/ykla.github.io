@@ -139,7 +139,7 @@ jobs:
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre>'
-                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' githead.txt
+                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/githead.txt
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
                 echo '<table>'
