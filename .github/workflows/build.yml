@@ -51,7 +51,6 @@ jobs:
             [ -d /usr/src ] || mkdir -p /usr/src && rm -rf /usr/src/*
             cd /usr/src
             git config --global advice.defaultBranchName false
-            git clone https://github.com/freebsd/freebsd-src.git /usr/src
             git clone --depth 1 --branch main https://git.freebsd.org/src.git /usr/src
 
             case "$TARGET_ARCH" in
