@@ -143,7 +143,6 @@ jobs:
                 echo '<body>'
                 echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项 std.debug）</h1>'
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
-                echo '<br>'
                 echo '<p>本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre>'
