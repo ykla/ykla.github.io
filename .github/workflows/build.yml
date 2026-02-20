@@ -133,7 +133,7 @@ jobs:
                 echo "  <title>Index of /${REL_PATH}</title>"
                 echo '  <style>'
                 echo '    body {'
-                echo '      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;'
+                echo '      font-family: ui-monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "WenQuanYi Micro Hei Mono", monospace;'
                 echo '      background:#ffffff;'
                 echo '      color:#000000;'
                 echo '      margin:0;'
@@ -162,6 +162,7 @@ jobs:
                 echo '<h1>FreeBSD 中文社区 pkgbase 镜像站</h1>'
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
                 echo '<p>本站 pkgbase 已移除调试选项 std.debug。本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
+                echo '<br>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc; overflow:auto;">'
           sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
@@ -183,7 +184,7 @@ jobs:
 
           if [ -d "$f" ]; then
           # 目录递归大小（排除 index.html 与 commit.txt）
-          SIZE=$(find "$f" -type f ! -name "index.html" ! -name "commit.txt" -exec du -k {} + 2>/dev/null | awk '{sum+=$1} END {printf "%.1fK", sum}')
+          SIZE=$(find "$f" -type f ! -name "index.html" ! -name "commit.txt" -exec du -h {} + 2>/dev/null | awk '{sum+=$1} END {printf "%.1fK", sum}')
           [ -z "$SIZE" ] && SIZE="0K"
                     echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
            else
