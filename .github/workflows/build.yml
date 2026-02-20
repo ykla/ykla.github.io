@@ -147,7 +147,7 @@ jobs:
                 echo '<p>本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
                 echo '<h3>当前构建提交信息</h3>'
                 echo '<pre>'
-                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' $DIR/commit.txt
+                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
                 echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
                 echo "<h2>Index of /${REL_PATH}</h2>"
                 echo '<table>'
