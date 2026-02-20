@@ -117,14 +117,14 @@ jobs:
           pwd
           ls -al
           ls -al */*
-
+        
           generate_index_recursive() {
-              DIR="$1"                     # 当前目录
-              REL_PATH="${2:-}"             # 相对于 pages-root 的路径，用于标题和链接
-              OUTPUT="$DIR/index.html"
-              BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')"  # 东八区时间
-          
-              {
+            DIR="$1"
+            REL_PATH="${2:-}"
+            OUTPUT="$DIR/index.html"
+            BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')"
+
+           {
                 echo '<!DOCTYPE html>'
                 echo '<html lang="zh-CN">'
                 echo '<head>'
@@ -132,57 +132,85 @@ jobs:
                 echo '  <meta name="viewport" content="width=device-width, initial-scale=1">'
                 echo "  <title>Index of /${REL_PATH}</title>"
                 echo '  <style>'
-                echo '    body { font-family: monospace; background:#fff; color:#000; }'
-                echo '    a { color:#00e; text-decoration:none; }'
+                echo '    body {'
+                echo '      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;'
+                echo '      background:#ffffff;'
+                echo '      color:#000000;'
+                echo '      margin:0;'
+                echo '      padding:16px;'
+                echo '      box-sizing:border-box;'
+                echo '    }'
+                echo '    h1, h2, h3 { margin-top:0; word-break:break-word; }'
+                echo '    p { margin:6px 0; word-break:break-word; }'
+                echo '    a { color:#0066cc; text-decoration:none; word-break:break-all; }'
                 echo '    a:hover { text-decoration:underline; }'
-                echo '    table { border-collapse:collapse; }'
-                echo '    th, td { padding:4px 12px; text-align:left; }'
+                echo '    .table-wrapper { width:100%; overflow-x:auto; }'
+                echo '    table { border-collapse:collapse; min-width:600px; width:100%; }'
+                echo '    th, td { padding:6px 10px; text-align:left; white-space:nowrap; font-size:14px; }'
                 echo '    th { border-bottom:1px solid #000; }'
+                echo '    tr:hover td { background:#f2f2f2; }'
+                echo '    hr { margin:16px 0; }'
+                echo '    @media (max-width:768px) {'
+                echo '      body { padding:10px; font-size:14px; }'
+                echo '      th, td { padding:4px 6px; font-size:13px; }'
+                echo '      table { min-width:500px; }'
+                echo '    }'
                 echo '  </style>'
                 echo '</head>'
                 echo '<body>'
-                echo '<h1>FreeBSD 中文社区 pkgbase 镜像站（已移除调试选项 std.debug）</h1>'
+
+                echo '<h1>FreeBSD 中文社区 pkgbase 镜像站</h1>'
                 echo '<p>本站所有时间均为北京时间：分别在每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建</p>'
-                echo '<p>本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
+                echo '<p>本站 pkgbase 已移除调试选项 std.debug。本项目构建源代码：https://github.com/ykla/ykla.github.io </p>'
                 echo '<h3>当前构建提交信息</h3>'
-                echo '<pre>'
-                sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
-                echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc;">'
+                echo '<pre style="background:#f6f6f6; padding:12px; border:1px solid #ccc; overflow:auto;">'
+          sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
+                echo '</pre>'
                 echo "<h2>Index of /${REL_PATH}</h2>"
+                echo '<div class="table-wrapper">'
                 echo '<table>'
                 echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
-                if [ "$REL_PATH" != "" ]; then
-                  echo '<tr><td><a href="../index.html">../</a></td><td></td><td></td></tr>'
-                fi
-                for f in "$DIR"/*; do
-                  NAME=$(basename "$f")
-                  [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue # 排除自己
-          
-                  if [ -d "$f" ]; then
-                              MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
-                    echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>-</td></tr>"
-                  else
-                    SIZE=$(du -sh "$f" | cut -f1)
-                    MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
-                    echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
-                  fi
-                done
-                echo '</table>'
-                echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
-                echo '<p>FreeBSD 中文社区赞助</p>'
-                echo '</body></html>'
-              } > "$OUTPUT"
 
-              for sub in "$DIR"/*/; do
+          if [ "$REL_PATH" != "" ]; then
+                  echo '<tr><td><a href="../index.html">../</a></td><td></td><td></td></tr>'
+          fi
+
+          for f in "$DIR"/*; do
+          NAME=$(basename "$f")
+          [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue
+
+          MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
+
+          if [ -d "$f" ]; then
+          # 目录递归大小（排除 index.html 与 commit.txt）
+          SIZE=$(find "$f" -type f ! -name "index.html" ! -name "commit.txt" -exec du -k {} + 2>/dev/null | awk '{sum+=$1} END {printf "%.1fK", sum}')
+          [ -z "$SIZE" ] && SIZE="0K"
+                    echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
+           else
+          SIZE=$(du -sh "$f" | cut -f1)
+                    echo "<tr><td><a href=\"$NAME\">$NAME</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
+          fi
+          done
+
+                echo '</table>'
+                echo '</div>'
+
+                echo "<hr><p>页面生成时间: $BUILD_TIME</p>"
+                echo '<p>FreeBSD 中文社区 2026</p>'
+                echo '</body>'
+                echo '</html>'
+
+          } > "$OUTPUT"
+
+          for sub in "$DIR"/*/; do
                 [ -d "$sub" ] || continue
                 SUB_NAME=$(basename "$sub")
                 SUB_REL_PATH="${REL_PATH}${SUB_NAME}/"
                 generate_index_recursive "$sub" "$SUB_REL_PATH"
               done
           }
+
           generate_index_recursive "pages-root"
-          pwd
-          ls -al
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
         with:
