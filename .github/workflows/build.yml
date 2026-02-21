@@ -120,11 +120,11 @@ jobs:
           ls -al */*
 
           generate_index_recursive() {
-            DIR="$1"
-            REL_PATH="${2:-}"
-            OUTPUT="$DIR/index.html"
-            BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')"
-
+              DIR="$1"
+              REL_PATH="${2:-}"
+              OUTPUT="$DIR/index.html"
+              BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')"
+          
           {
           echo '<!DOCTYPE html>'
           echo '<html lang="zh-CN">'
@@ -134,92 +134,104 @@ jobs:
           echo "  <title>Index of /${REL_PATH}</title>"
           echo '  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">'
           echo '  <style>'
-          echo '    :root {'
-          echo '      --primary-color: #000000;'
-          echo '      --secondary-color: #f8f8f8;'
-          echo '      --accent-color: #333333;'
-          echo '      --text-color: #333333;'
-          echo '      --light-text: #666666;'
-          echo '      --border-color: #e0e0e0;'
-          echo '      --card-bg: #ffffff;'
-          echo '      --shadow: 0 4px 12px rgba(0,0,0,0.08);'
-          echo '    }'
-          echo '    * { margin:0; padding:0; box-sizing:border-box; }'
-          echo '    body {'
-          echo '      font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Noto Sans CJK SC",sans-serif;'
-          echo '      color:var(--text-color);'
-          echo '      line-height:1.6;'
-          echo '      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);'
-          echo '    }'
-          echo '    .container { max-width:1200px; margin:0 auto; padding:20px; }'
-          echo '    header { margin-bottom:20px; text-align:center; }'
-          echo '    header h1 { display:flex; align-items:center; justify-content:center; gap:12px; font-size:1.8rem; margin-bottom:10px; }'
-          echo '    header p { margin-top:10px; font-size:1rem; color:#555; }'
-          echo '    h2 { margin-bottom:20px; border-bottom:2px solid var(--secondary-color); padding-bottom:10px; }'
-          echo '    .info-card {'
-          echo '      background: var(--card-bg);'
-          echo '      padding:20px;'
-          echo '      border-radius:12px;'
-          echo '      box-shadow:var(--shadow);'
-          echo '      margin-bottom:30px;'
-          echo '      transition: transform 0.2s;'
-          echo '    }'
-          echo '    .info-card:hover { transform: translateY(-4px); }'
-          echo '    .commit-info {'
-          echo '      background:#1f883d;'
-          echo '      color:white;'
-          echo '      padding:15px;'
-          echo '      border-radius:8px;'
-          echo '      border-left:4px solid #1a7333;'
-          echo '      overflow:auto;'
-          echo '      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;'
-          echo '      font-size:0.9rem;'
-          echo '      white-space:pre-wrap;'
-          echo '      word-break:break-word;'
-          echo '    }'
-          echo '    table {'
-          echo '      width:100%;'
-          echo '      border-collapse:collapse;'
-          echo '      background:#fff;'
-          echo '      border-radius:8px;'
-          echo '      overflow:hidden;'
-          echo '      box-shadow:0 2px 8px rgba(0,0,0,0.05);'
-          echo '      margin-bottom:20px;'
-          echo '    }'
-          echo '    th, td { padding:12px; text-align:left; }'
-          echo '    th { background:#f1f3f5; cursor:pointer; }'
-          echo '    th.asc::after { content:" ▲"; }'
-          echo '    th.desc::after { content:" ▼"; }'
-          echo '    tr:hover td { background:#f8f9fa; }'
-          echo '    footer { text-align:center; margin-top:40px; font-size:0.9rem; color:#555; }'
+
+          echo '  :root {'
+          echo '    --primary:#111;'
+          echo '    --bg:#f5f6f8;'
+          echo '    --card:#ffffff;'
+          echo '    --text:#222;'
+          echo '    --sub:#666;'
+          echo '    --border:#e5e7eb;'
+          echo '    --shadow:0 4px 16px rgba(0,0,0,.06);'
+          echo '  }'
+
+          echo '  *{margin:0;padding:0;box-sizing:border-box;}'
+
+          echo '  body{'
+          echo '    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Noto Sans CJK SC",sans-serif;'
+          echo '    background:var(--bg);'
+          echo '    color:var(--text);'
+          echo '    line-height:1.6;'
+          echo '  }'
+
+          echo '  .container{max-width:1200px;margin:auto;padding:20px;}'
+
+          echo '  header{text-align:center;margin-bottom:30px;}'
+          echo '  header h1{display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.7rem;}'
+          echo '  header p{margin-top:10px;color:var(--sub);}'
+
+          echo '  h2{'
+          echo '    margin-bottom:20px;'
+          echo '    padding-bottom:10px;'
+          echo '    border-bottom:1px solid var(--border);'
+          echo '    overflow-x:auto;'
+          echo '    white-space:nowrap;'
+          echo '  }'
+
+          echo '  .info-card{'
+          echo '    background:var(--card);'
+          echo '    padding:20px;'
+          echo '    border-radius:14px;'
+          echo '    box-shadow:var(--shadow);'
+          echo '    margin-bottom:30px;'
+          echo '  }'
+
+          # 美化后的 commit 卡片
+          echo '  .commit-info{'
+          echo '    background:linear-gradient(135deg,#1e293b,#0f172a);'
+          echo '    color:#e2e8f0;'
+          echo '    padding:16px;'
+          echo '    border-radius:10px;'
+          echo '    overflow-x:auto;'
+          echo '    overflow-y:hidden;'
+          echo '    white-space:pre;'
+          echo '    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;'
+          echo '    font-size:0.9rem;'
+          echo '  }'
+
+          echo '  table{'
+          echo '    width:100%;'
+          echo '    border-collapse:collapse;'
+          echo '    background:#fff;'
+          echo '    border-radius:10px;'
+          echo '    overflow:hidden;'
+          echo '    box-shadow:0 2px 10px rgba(0,0,0,.04);'
+          echo '  }'
+
+          echo '  th,td{padding:12px;}'
+          echo '  th{background:#f3f4f6;font-weight:600;}'
+          echo '  tr:hover td{background:#f9fafb;}'
+
+          echo '  footer{text-align:center;margin-top:40px;font-size:.9rem;color:#666;}'
+
           echo '  </style>'
           echo '</head>'
           echo '<body>'
           echo '<div class="container">'
 
-          # Header + 居中正文
+          # Header
           echo '<header>'
           echo '<h1>'
-          echo '  <img src="https://www.bsdcn.org/image/avatar.jpg" alt="BSDCN Logo" style="width:42px;height:42px;border-radius:8px;">'
+          echo '  <img src="https://www.bsdcn.org/image/avatar.jpg" style="width:42px;height:42px;border-radius:8px;">'
           echo '  <span>FreeBSD 中文社区 pkgbase 镜像站</span>'
           echo '</h1>'
           echo '<p>本站所有时间均为北京时间：每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建。<br>'
           echo '本站 pkgbase 已移除调试选项 std.debug。本项目构建源代码：<a href="https://github.com/ykla/ykla.github.io" target="_blank">GitHub</a></p>'
           echo '</header>'
 
-          # 提交信息卡片
+          # commit 卡片
           echo '<div class="info-card">'
           echo '<h3>当前构建提交信息</h3>'
           echo '<div class="commit-info">'
           sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt \
-            | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g'
-                    echo '</div>'
-                    echo '</div>'
+          | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:#93c5fd;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:#93c5fd;text-decoration:underline;">\1</a>|g'
+          echo '</div>'
+          echo '</div>'
 
-          # 文件索引表格
+          # 文件表格
           echo '<div class="info-card">'
           echo "<h2>Index of /${REL_PATH}</h2>"
-          echo '<table id="fileTable">'
+          echo '<table>'
           echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
 
           if [ "$REL_PATH" != "" ]; then
@@ -229,7 +241,6 @@ jobs:
           for NAME in $(ls -1 "$DIR" | sort); do
             f="$DIR/$NAME"
             [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue
-
             MTIME=$(date -r "$f" '+%Y-%m-%d %H:%M:%S')
 
             if [ -d "$f" ]; then
@@ -245,41 +256,17 @@ jobs:
           echo '</table>'
           echo '</div>'
 
-          # Footer
           echo '<footer>'
           echo "<p>页面生成时间: $BUILD_TIME</p>"
           echo '<p>© FreeBSD 中文社区 2026</p>'
           echo '</footer>'
 
           echo '</div>'
-
-          # 表格排序脚本
-          echo '<script>'
-          echo 'document.querySelectorAll("th").forEach((header, index) => {'
-          echo '  header.addEventListener("click", () => {'
-          echo '    const table = document.getElementById("fileTable");'
-          echo '    const rows = Array.from(table.rows).slice(1);'
-          echo '    const asc = header.classList.toggle("asc");'
-          echo '    header.classList.toggle("desc", !asc);'
-          echo '    rows.sort((a,b)=>{'
-          echo '      let A=a.cells[index].innerText.trim();'
-          echo '      let B=b.cells[index].innerText.trim();'
-          echo '      let numA=parseFloat(A.replace(/[^\d.]/g,""));'
-          echo '      let numB=parseFloat(B.replace(/[^\d.]/g,""));'
-          echo '      if(!isNaN(numA)&&!isNaN(numB)) return asc?numA-numB:numB-numA;'
-          echo '      return asc?A.localeCompare(B):B.localeCompare(A);'
-          echo '    });'
-          echo '    rows.forEach(r=>table.appendChild(r));'
-          echo '  });'
-          echo '});'
-          echo '</script>'
-
           echo '</body>'
           echo '</html>'
 
           } > "$OUTPUT"
 
-          # 递归生成子目录
           for sub in "$DIR"/*/; do
             [ -d "$sub" ] || continue
             SUB_NAME=$(basename "$sub")
@@ -288,7 +275,6 @@ jobs:
           done
           }
 
-          # 调用函数
           generate_index_recursive "pages-root"
 
       - name: 上传 Pages Artifact
