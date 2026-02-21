@@ -219,9 +219,7 @@ jobs:
           if [ "$REL_PATH" != "" ]; then
             echo '<tr><td><a href="../index.html">../</a></td><td></td><td></td></tr>'
           fi
-
-          # 排序输出
-          for NAME in $(ls -1 "$DIR" | sort); do
+            for NAME in $(ls -1 "$DIR" | sort); do
             f="$DIR/$NAME"
             [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue
 
@@ -246,8 +244,6 @@ jobs:
           echo '</footer>'
 
           echo '</div>'
-
-          # 表格排序脚本
           echo '<script>'
           echo 'document.querySelectorAll("th").forEach((header, index) => {'
           echo '  header.addEventListener("click", () => {'
