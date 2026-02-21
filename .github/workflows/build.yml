@@ -184,7 +184,7 @@ jobs:
 
           if [ -d "$f" ]; then
           # 目录递归大小（排除 index.html 与 commit.txt）
-          SIZE=$(find "$f" -type f ! -name "index.html" ! -name "commit.txt" -exec du -h {} + 2>/dev/null | awk '{sum+=$1} END {printf "%.1fK", sum}')
+          SIZE=$(find "$f" -type f ! -name "index.html" ! -name "commit.txt" -exec du -k {} + 2>/dev/null | awk '{sum+=$1} END {if(sum>=1024*1024)printf "%.2fG",sum/1024/1024; else if(sum>=1024)printf "%.2fM",sum/1024; else printf "%.2fK",sum}')
           [ -z "$SIZE" ] && SIZE="0K"
                     echo "<tr><td><a href=\"$NAME/index.html\">$NAME/</a></td><td>$MTIME</td><td>$SIZE</td></tr>"
            else
