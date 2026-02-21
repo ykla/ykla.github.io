@@ -195,7 +195,7 @@ jobs:
           echo '  <span>FreeBSD 中文社区 pkgbase 镜像站</span>'
           echo '</h1>'
           echo '<p>每日 1:00 / 9:00 / 17:00 构建 CURRENT</p>'
-echo '</header>'
+          echo '</header>'
           
           echo '<div class="info-card">'
           echo '<h3>当前构建提交信息</h3>'
