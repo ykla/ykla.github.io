@@ -151,10 +151,10 @@ jobs:
           echo '      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);'
           echo '    }'
           echo '    .container { max-width:1200px; margin:0 auto; padding:20px; }'
-          echo '    header { margin-bottom:20px; }'
-          echo '    h1 { font-size:1.8rem; margin-bottom:10px; }'
+          echo '    header { margin-bottom:20px; text-align:center; }'
+          echo '    header h1 { display:flex; align-items:center; justify-content:center; gap:12px; font-size:1.8rem; margin-bottom:10px; }'
+          echo '    header p { margin-top:10px; font-size:1rem; color:#555; }'
           echo '    h2 { margin-bottom:20px; border-bottom:2px solid var(--secondary-color); padding-bottom:10px; }'
-          echo '    p { font-size:1rem; color:#555; margin-top:10px; }'
           echo '    .info-card {'
           echo '      background: var(--card-bg);'
           echo '      padding:20px;'
@@ -196,12 +196,13 @@ jobs:
           echo '<body>'
           echo '<div class="container">'
 
-          # Header
+          # Header + 居中正文
           echo '<header>'
-          echo '<h1 style="display:flex;align-items:center;gap:12px;">'
+          echo '<h1>'
           echo '  <img src="https://www.bsdcn.org/image/avatar.jpg" alt="BSDCN Logo" style="width:42px;height:42px;border-radius:8px;">'
           echo '  <span>FreeBSD 中文社区 pkgbase 镜像站</span>'
           echo '</h1>'
+          echo '<p>每日 1:00 / 9:00 / 17:00 构建 CURRENT</p>'
           echo '<p>本站所有时间均为北京时间：每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建。<br>'
           echo '本站 pkgbase 已移除调试选项 std.debug。本项目构建源代码：<a href="https://github.com/ykla/ykla.github.io" target="_blank">GitHub</a></p>'
           echo '</header>'
@@ -213,7 +214,7 @@ jobs:
           sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt \
             | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g'
                     echo '</div>'
-          echo '</div>'
+                    echo '</div>'
 
           # 文件索引表格
           echo '<div class="info-card">'
