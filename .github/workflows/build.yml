@@ -117,8 +117,7 @@ jobs:
           pwd
           ls -al
           ls -al */*
-        
-          generate_index_recursive() {
+           generate_index_recursive() {
             DIR="$1"
             REL_PATH="${2:-}"
             OUTPUT="$DIR/index.html"
@@ -394,53 +393,55 @@ jobs:
                 echo '    }'
 
                 echo '  </style>'
-                echo '  <script>'
-                echo '    document.addEventListener("DOMContentLoaded", function() {'
-                echo '      const table = document.querySelector("table");'
-                echo '      const headers = table.querySelectorAll("th");'
-                echo '      '
-                echo '      headers.forEach(header => {'
-                echo '        header.addEventListener("click", function() {'
-                echo '          const columnIndex = Array.from(headers).indexOf(this);'
-                echo '          const isAscending = this.classList.contains("ascending");'
-                echo '          '
-                echo '          // 移除所有排序状态'
-                echo '          headers.forEach(h => {'
-                echo '            h.classList.remove("ascending", "descending");'
-                echo '          });'
-                echo '          '
-                echo '          // 设置当前排序状态'
-                echo '          this.classList.toggle("ascending", !isAscending);'
-                echo '          this.classList.toggle("descending", isAscending);'
-                echo '          '
-                echo '          // 排序表格'
-                echo '          sortTable(table, columnIndex, !isAscending);'
+                echo '<script>'
+                echo '  document.addEventListener("DOMContentLoaded", function() {'
+                echo '    var table = document.querySelector("table");'
+                echo '    var headers = table.querySelectorAll("th");'
+                echo '    '
+                echo '    headers.forEach(function(header) {'
+                echo '      header.addEventListener("click", function() {'
+                echo '        var columnIndex = Array.from(headers).indexOf(this);'
+                echo '        var isAscending = this.classList.contains("ascending");'
+                echo '        '
+                echo '        // 移除所有排序状态'
+                echo '        headers.forEach(function(h) {'
+                echo '          h.classList.remove("ascending", "descending");'
                 echo '        });'
+                echo '        '
+                echo '        // 设置当前排序状态'
+                echo '        this.classList.toggle("ascending", !isAscending);'
+                echo '        this.classList.toggle("descending", isAscending);'
+                echo '        '
+                echo '        // 排序表格'
+                echo '        sortTable(table, columnIndex, !isAscending);'
+                echo '      });'
+                echo '    });'
+                echo '    '
+                echo '    function sortTable(table, columnIndex, ascending) {'
+                echo '      var tbody = table.querySelector("tbody") || table.querySelector("tr").parentNode;'
+                echo '      var rows = Array.from(tbody.querySelectorAll("tr"));'
+                echo '      '
+                echo '      rows.sort(function(a, b) {'
+                echo '        var aValue = a.querySelectorAll("td")[columnIndex].textContent.trim();'
+                echo '        var bValue = b.querySelectorAll("td")[columnIndex].textContent.trim();'
+                echo '        '
+                echo '        // 处理数字和日期'
+                echo '        if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {'
+                echo '          return ascending ? new Date(aValue) - new Date(bValue) : new Date(bValue) - new Date(aValue);'
+                echo '        } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {'
+                echo '          return ascending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);'
+                echo '        } else {'
+                echo '          return ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);'
+                echo '        }'
                 echo '      });'
                 echo '      '
-                echo '      function sortTable(table, columnIndex, ascending) {'
-                echo '        const tbody = table.querySelector("tbody") || table.querySelector("tr").parentNode;'
-                echo '        const rows = Array.from(tbody.querySelectorAll("tr"));'
-                echo '        '
-                echo '        rows.sort((a, b) => {'
-                echo '          const aValue = a.querySelectorAll("td")[columnIndex].textContent.trim();'
-                echo '          const bValue = b.querySelectorAll("td")[columnIndex].textContent.trim();'
-                echo '          '
-                echo '          // 处理数字和日期'
-                echo '          if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {'
-                echo '            return ascending ? new Date(aValue) - new Date(bValue) : new Date(bValue) - new Date(aValue);'
-                echo '          } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {'
-                echo '            return ascending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);'
-                echo '          } else {'
-                echo '            return ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);'
-                echo '          }'
-                echo '        });'
-                echo '        '
-                echo '        // 重新插入排序后的行'
-                echo '        rows.forEach(row => tbody.appendChild(row));'
-                echo '      }'
-                echo '    });'
-                echo '  </script>'
+                echo '      // 重新插入排序后的行'
+                echo '      rows.forEach(function(row) {'
+                echo '        tbody.appendChild(row);'
+                echo '      });'
+                echo '    }'
+                echo '  });'
+                echo '</script>'
                 echo '</head>'
                 echo '<body>'
                 echo '<div class="container">'
@@ -514,7 +515,10 @@ jobs:
               done
           }
 
-          generate_index_recursive "pages-root"
+          generate_index_recursive "pages-root"       
+
+
+
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
         with:
