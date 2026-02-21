@@ -200,9 +200,8 @@ jobs:
           echo '<div class="info-card">'
           echo '<h3>当前构建提交信息</h3>'
           echo '<div class="commit-info">'
-
-          sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
-
+          sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt \
+          | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g'
           echo '</div>'
           echo '</div>'
 
