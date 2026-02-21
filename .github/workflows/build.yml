@@ -46,7 +46,6 @@ jobs:
           run: |
             ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
             date
-            ntpdate pool.ntp.org
             TARGET_ARCH=${{ matrix.target }}
             pkg update -f  # 注意，riscv 默认无 pkg 源
             pkg ins -y git 
