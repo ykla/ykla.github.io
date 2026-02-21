@@ -74,7 +74,7 @@ jobs:
             cp -R /usr/obj/usr/src/repo/. /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             cd /usr/src
             TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：<a href=\"https://github.com/freebsd/freebsd-src/commit/%H\" target=\"_blank\">%h</a>%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z"  > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt   
-            # TZ=Asia/Shanghai git log -1 --pretty=format:"哈希：%H%n作者：%an <%ae>%n提交者：%cn <%ce>%n提交时间：%cd%n提交信息：%n%n%B" --date=format:"%Y-%m-%d %H:%M:%S %z" > /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt
+
             ls -al /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             du -sh /home/runner/work/ykla.github.io/ykla.github.io/pages-root/
             
