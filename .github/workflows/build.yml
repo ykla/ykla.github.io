@@ -141,29 +141,33 @@ jobs:
           echo '      --light-text: #666666;'
           echo '      --border-color: #e0e0e0;'
           echo '      --card-bg: #ffffff;'
-          echo '      --shadow: 0 2px 8px rgba(0,0,0,0.08);'
+          echo '      --shadow: 0 4px 12px rgba(0,0,0,0.08);'
           echo '    }'
           echo '    * { margin:0; padding:0; box-sizing:border-box; }'
           echo '    body {'
           echo '      font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Noto Sans CJK SC",sans-serif;'
           echo '      color:var(--text-color);'
           echo '      line-height:1.6;'
+          echo '      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);'
           echo '    }'
           echo '    .container { max-width:1200px; margin:0 auto; padding:20px; }'
           echo '    header { margin-bottom:20px; }'
           echo '    h1 { font-size:1.8rem; margin-bottom:10px; }'
           echo '    h2 { margin-bottom:20px; border-bottom:2px solid var(--secondary-color); padding-bottom:10px; }'
+          echo '    p { font-size:1rem; color:#555; margin-top:10px; }'
           echo '    .info-card {'
-          echo '      background:var(--card-bg);'
-          echo '      padding:25px;'
-          echo '      border-radius:10px;'
+          echo '      background: var(--card-bg);'
+          echo '      padding:20px;'
+          echo '      border-radius:12px;'
           echo '      box-shadow:var(--shadow);'
           echo '      margin-bottom:30px;'
+          echo '      transition: transform 0.2s;'
           echo '    }'
+          echo '    .info-card:hover { transform: translateY(-4px); }'
           echo '    .commit-info {'
           echo '      background:#1f883d;'
           echo '      color:white;'
-          echo '      padding:20px;'
+          echo '      padding:15px;'
           echo '      border-radius:8px;'
           echo '      border-left:4px solid #1a7333;'
           echo '      overflow:auto;'
@@ -172,53 +176,55 @@ jobs:
           echo '      white-space:pre-wrap;'
           echo '      word-break:break-word;'
           echo '    }'
-          echo '    table { width:100%; border-collapse:collapse; }'
-          echo '    th {'
-          echo '      background:var(--secondary-color);'
-          echo '      padding:12px;'
-          echo '      text-align:left;'
-          echo '      cursor:pointer;'
+          echo '    table {'
+          echo '      width:100%;'
+          echo '      border-collapse:collapse;'
+          echo '      background:#fff;'
+          echo '      border-radius:8px;'
+          echo '      overflow:hidden;'
+          echo '      box-shadow:0 2px 8px rgba(0,0,0,0.05);'
+          echo '      margin-bottom:20px;'
           echo '    }'
+          echo '    th, td { padding:12px; text-align:left; }'
+          echo '    th { background:#f1f3f5; cursor:pointer; }'
           echo '    th.asc::after { content:" ▲"; }'
           echo '    th.desc::after { content:" ▼"; }'
-          echo '    td { padding:12px; border-bottom:1px solid var(--border-color); }'
-          echo '    tr:hover td { background:var(--secondary-color); }'
-          echo '    footer { text-align:center; margin-top:40px; font-size:0.9rem; }'
+          echo '    tr:hover td { background:#f8f9fa; }'
+          echo '    footer { text-align:center; margin-top:40px; font-size:0.9rem; color:#555; }'
           echo '  </style>'
           echo '</head>'
           echo '<body>'
           echo '<div class="container">'
 
+          # Header
           echo '<header>'
           echo '<h1 style="display:flex;align-items:center;gap:12px;">'
           echo '  <img src="https://www.bsdcn.org/image/avatar.jpg" alt="BSDCN Logo" style="width:42px;height:42px;border-radius:8px;">'
           echo '  <span>FreeBSD 中文社区 pkgbase 镜像站</span>'
           echo '</h1>'
-          echo '<p>每日 1:00 / 9:00 / 17:00 构建 CURRENT</p>'
+          echo '<p>本站所有时间均为北京时间：每日凌晨 1 时、上午 9 时、傍晚 5 时拉取 freebsd-src 的 main 分支（CURRENT）进行构建。<br>'
+          echo '本站 pkgbase 已移除调试选项 std.debug。本项目构建源代码：<a href="https://github.com/ykla/ykla.github.io" target="_blank">GitHub</a></p>'
           echo '</header>'
 
+          # 提交信息卡片
           echo '<div class="info-card">'
           echo '<h3>当前构建提交信息</h3>'
           echo '<div class="commit-info">'
           sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' /home/runner/work/ykla.github.io/ykla.github.io/pages-root/commit.txt \
-          | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g'
-          echo '</div>'
+            | sed -E 's|(https?://[^ ]+)|<a href="\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g; s|哈希：([0-9a-f]{7,40})|哈希：<a href="https://github.com/freebsd/freebsd-src/commit/\1" target="_blank" style="color:white;text-decoration:underline;">\1</a>|g'
+                    echo '</div>'
           echo '</div>'
 
+          # 文件索引表格
           echo '<div class="info-card">'
           echo "<h2>Index of /${REL_PATH}</h2>"
           echo '<table id="fileTable">'
-          echo '<tr>'
-          echo '<th>文件名</th>'
-          echo '<th>最后变动时间（UTC+8）</th>'
-          echo '<th>大小</th>'
-          echo '</tr>'
+          echo '<tr><th>文件名</th><th>最后变动时间（UTC+8）</th><th>大小</th></tr>'
 
           if [ "$REL_PATH" != "" ]; then
             echo '<tr><td><a href="../index.html">../</a></td><td></td><td></td></tr>'
           fi
 
-          # 排序输出
           for NAME in $(ls -1 "$DIR" | sort); do
             f="$DIR/$NAME"
             [[ "$NAME" = "index.html" || "$NAME" = "commit.txt" ]] && continue
@@ -238,6 +244,7 @@ jobs:
           echo '</table>'
           echo '</div>'
 
+          # Footer
           echo '<footer>'
           echo "<p>页面生成时间: $BUILD_TIME</p>"
           echo '<p>© FreeBSD 中文社区 2026</p>'
@@ -271,6 +278,7 @@ jobs:
 
           } > "$OUTPUT"
 
+          # 递归生成子目录
           for sub in "$DIR"/*/; do
             [ -d "$sub" ] || continue
             SUB_NAME=$(basename "$sub")
@@ -279,8 +287,8 @@ jobs:
           done
           }
 
+          # 调用函数
           generate_index_recursive "pages-root"
-
 
       - name: 上传 Pages Artifact
         uses: actions/upload-pages-artifact@v4
