@@ -72,11 +72,15 @@ jobs:
             # 仅针对 amd64 构建镜像
             if [ "$TARGET_ARCH" = "amd64" ]; then
                 # 定制桌面环境：将 GNOME 替换为 KDE
-                sed -i '' 's|^x11/gnome|x11/kde5|' /usr/src/release/scripts/pkg-stage.sh
+                sed -i '' 's|^x11/gnome|x11/kde|' /usr/src/release/scripts/pkg-stage.sh
                 # 构建 ISO 和 img 镜像
-                make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH cdrom memstick.img 
+                cd /usr/src/release
+                make -s -j$(sysctl -n hw.ncpu) cdrom
+                make -s -j$(sysctl -n hw.ncpu) memstick
                 # 复制镜像文件
                 cp /usr/src/disc1.iso /usr/src/memstick.img  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
+                cp /usr/src/disc1.iso /usr/src/cdrom.iso  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
+                cd ..
             fi
             # 直接复制到 pages-root
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
