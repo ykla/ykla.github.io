@@ -78,8 +78,10 @@ jobs:
                 make -s -j$(sysctl -n hw.ncpu) cdrom
                 make -s -j$(sysctl -n hw.ncpu) memstick
                 # 复制镜像文件
-                cp /usr/src/disc1.iso /usr/src/memstick.img  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
-                cp /usr/src/disc1.iso /usr/src/cdrom.iso  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
+                ls /usr/src
+                ls /home/runner/work/ykla.github.io/ykla.github.io
+                cp /usr/src/*.img  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
+                cp /usr/src/*.iso  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
                 cd ..
             fi
             # 直接复制到 pages-root
