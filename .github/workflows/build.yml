@@ -68,22 +68,7 @@ jobs:
 
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildworld
             make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH buildkernel
-            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages
-            # 仅针对 amd64 构建镜像
-            if [ "$TARGET_ARCH" = "amd64" ]; then
-                # 定制桌面环境：将 GNOME 替换为 KDE
-                sed -i '' 's|^x11/gnome|x11/kde|' /usr/src/release/scripts/pkg-stage.sh
-                # 构建 ISO 和 img 镜像
-                cd /usr/src/release
-                make -s -j$(sysctl -n hw.ncpu) cdrom
-                make -s -j$(sysctl -n hw.ncpu) memstick
-                # 复制镜像文件
-                ls /usr/src
-                ls /home/runner/work/ykla.github.io/ykla.github.io
-                cp /usr/src/*.img  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
-                cp /usr/src/*.iso  /home/runner/work/ykla.github.io/ykla.github.io/pages-root/ 2>/dev/null || true
-                cd ..
-            fi
+            make -s -j$(sysctl -n hw.ncpu) TARGET_ARCH=$TARGET_ARCH packages        
             # 直接复制到 pages-root
             mkdir -p /home/runner/work/ykla.github.io/ykla.github.io/pages-root 
             for d in /usr/obj/usr/src/repo/FreeBSD:16:*; do mv "$d" "$(echo "$d" | sed 's/:/-/g')"; done
