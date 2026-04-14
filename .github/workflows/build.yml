@@ -282,7 +282,7 @@ jobs:
           generate_index_recursive "pages-root"
           
       - name: 上传 Pages Artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: pages-root
 
