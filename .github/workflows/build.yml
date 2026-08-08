@@ -38,7 +38,7 @@ jobs:
       - name: 在 FreeBSD VM 中构建 (${{ matrix.target }})
         uses: vmactions/freebsd-vm@v1.5.3
         with:
-          release: "15.0"
+          release: "15.1"
           arch: x86_64
           sync-time: true
           mem: 8192
